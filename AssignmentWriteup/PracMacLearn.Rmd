@@ -4,10 +4,11 @@ author: "Wong Wing Keng"
 date: "December 2015"
 output:
   html_document:
+    css: custom.css
     keep_md: yes
     toc: yes
-    css: custom.css
   pdf_document: default
+  word_document: default
 subtitle: Practical Machine Learning Assignment
 ---
 
@@ -15,7 +16,7 @@ subtitle: Practical Machine Learning Assignment
 
 ###Executive Summary
 
-This report will explore the **Weight Lifting Exercise Dataset** from [ [ Velloso et al., 2013 ] ](http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises) and attempts to build machine learning models. The best model is then chosen to be used to predict the manner in which a group of participants who performed barbell lifting exercise.  The prediction model will segregate their actions according to a pre-defined classification set i.e., Class A to E (based upon their weight lifting movement). The predicted result can possibly be further utilised to measure/reviews the correctness of the weight lifting exercise through other means or applications.
+This report will explore the **Weight Lifting Exercise Dataset** from [ [ Velloso et al., 2013 ] ](http://groupware.les.inf.puc-rio.br/har#weight_lifting_exercises) and attempts to build machine learning models. The best model is then chosen to be used to predict the manner in which a group of participants who performed barbell lifting exercise.  The prediction model will segregate their actions according to a pre-defined classification set i.e., Class A to E (based upon their weight lifting movement). The predicted result can possibly be further utilised to measure/reviews the correctness of the weight lifting exercise.
 
 Additional reference: http://groupware.les.inf.puc-rio.br/har 
 (*see the section on the Weight Lifting Exercise Dataset).  
@@ -89,7 +90,7 @@ Additional check on zero covariates:
 ```{r nzerolist, cache=TRUE, echo=TRUE}
 ###Near Zero Covariates
 suppressMessages(library(caret))
-nzlist<-nearZeroVar(training)
+nzlist<-nearZeroVar(training) ###Near Zero Variance Column Index
 length(nzlist)
 ```
 
@@ -128,7 +129,7 @@ The objective of the report is on predicting the classification of actions, vari
 head(training,2)
 ```
 
-Further review on the remaining columns shows the first **6** variables/columns (referencing the **"head"** function output above) probably does not contains information/values that would necessary influences nor helps in identifying the weight lifting direction and hence the **"classe"**" outcome, hence these will be removed as well.
+Further review on the remaining columns shows the first **6** variables/columns (referencing the **"head"** function output above) do not contain information/values that would necessary influences nor helps in identifying the weight lifting direction and hence the **"classe"**" outcome. These 6 columns will be removed as well.
 
 ```{r remove_variable, echo=TRUE}
 training<-training[,-c(1:6)]
@@ -162,7 +163,7 @@ dim(train_dat);dim(valid_dat)
 
 In the following section, several machine learning algorithm is tested with model training.  
 
-In order to speed up model training, parallel processing functionality is enabled. In addition, the model training options is tuned to achieve an standardized and assumed acceptable balance between machine model training duration and accuracy level.
+In order to speed up model training, parallel processing functionality is enabled. In addition, the model training options is tuned to achieve a standardized comparable and assumed acceptable balance between machine model training duration and accuracy level.
 
 ```{r model_testing_prep, echo=TRUE}
 ### Enabling parallel processing to speed up model training
@@ -231,9 +232,9 @@ varImp(model_list[[2]])
 plot(model_list[[2]])
 ```
 
-The above plot shows **Random Forest** algorithm produces the highest accuracy result when it uses **27** out to the total **52** predictors supplied.   
+The above plot shows **Random Forest** algorithm produces the highest accuracy result when it uses **27** out to the total **52** predictors supplied. (*Total 27 variables tried at each tree split as mentioned in the finalModel output).  
 
-\*Although the **Random Forest** model has shown that only 27 predictors is required for model buiding but no further manual intervention/pre-processing will be performed on the raw dataset. Reason being the **Random Forest** algorithm itself will automatically determine the optimum combination of the 27 required predictors based upon the variables importance order as listed above. 
+\*Although the **Random Forest** model has shown that only 27 predictors are required for model buiding but no further manual intervention/pre-processing will be performed on the raw dataset. Reason being the **Random Forest** algorithm itself will automatically determine the optimum combination of the 27 required predictors. This will be based upon the variables importance order as listed above. 
 
 ```{r predict2, echo=TRUE}
 ### Prediction againts validation dataset 
@@ -292,7 +293,7 @@ suppressMessages(library(MASS))
 train_time_elapse[[4]]<-system.time(model_list[[4]] <- train(classe ~ ., data = train_dat,method = "lda",trControl =cntrl ))
 
 print(model_list[[4]])
-#model_list[[4]]$finalModel ### Optional display of extensive final model listing
+#model_list[[4]]$finalModel ### Disabled - Optional display of extensive final model listing
 ```
 
 ```{r predict4, echo=TRUE}
@@ -346,8 +347,9 @@ comparison_table<-data.frame(
 
 names(comparison_table) <- c('Model Algorithm', 'Training Speed (sec)','Prediction Speed (sec)','Accuracy %', 'Out of Sample Error Rate %')
 
-kable(comparison_table,digits=2, align=c("l","c","c","c","c"), caption="**Model Comparison Summarization Table:**")
 ### Applied together with custom css style to create nice html table
+kable(comparison_table,digits=2, align=c("l","c","c","c","c"), caption="**Model Comparison Summarization Table:**")
+
 ```
 
 ####B) Visual Review of Prediction Result on Validation Dataset  
@@ -389,7 +391,7 @@ By picking the top 2 important variables: **roll_belt** and **pitch_forearm** (r
 
 ###Conclusion
 
-From the summarized table and plots above, it can be observed the best performing model is model 2.  Model 2 uses the **Random Forest** algorithm. This best model will be used as the final model to predict the weight lifting actions from the testing dataset.  
+From the summarized table and plots above, it can be observed the best performing model is model 2 with the highest accuracy level.  Model 2 uses the **Random Forest** algorithm. Although this model may also takes the longest training duration but with computing power nowadays it is possible to further reduce training duration by using higher cores cpu technology and hence achieving an acceptable runtime. For the current weight lifting prediction requirement, model 2 training duration of **`r train_time_elapse[[2]]['elapsed']` sec ( or `r round(train_time_elapse[[2]]['elapsed']/60,2)` mins )** is deemed acceptable.  This best model will be used as the final model to predict the weight lifting actions from the testing dataset.  
 
 ----  
 
