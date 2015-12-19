@@ -388,7 +388,7 @@ suppressMessages(library(rpart))
 fancyRpartPlot(model_list[[1]]$finalModel, sub="Model 1 Decision Tree")
 ```
 
-![](PracMacLearn-Assignment_files/figure-html/rpart_plot-1.png) 
+![](PracMacLearn_files/figure-html/rpart_plot-1.png) 
 
 
 ```r
@@ -462,9 +462,9 @@ print(model_list[[2]])
 ## Resampling results across tuning parameters:
 ## 
 ##   mtry  Accuracy   Kappa      Accuracy SD  Kappa SD   
-##    2    0.9844597  0.9803357  0.002549426  0.003227334
-##   27    0.9876868  0.9844219  0.001148970  0.001453311
-##   52    0.9795345  0.9741083  0.002578828  0.003266496
+##    2    0.9845446  0.9804435  0.002553611  0.003231623
+##   27    0.9877716  0.9845294  0.001592574  0.002014549
+##   52    0.9793646  0.9738925  0.004211121  0.005334238
 ## 
 ## Accuracy was used to select the optimal model using  the largest value.
 ## The final value used for the model was mtry = 27.
@@ -530,7 +530,7 @@ varImp(model_list[[2]])
 plot(model_list[[2]])
 ```
 
-![](PracMacLearn-Assignment_files/figure-html/rf_plots-1.png) 
+![](PracMacLearn_files/figure-html/rf_plots-1.png) 
 
 The above plot shows **Random Forest** algorithm produces the highest accuracy result when it uses **27** out to the total **52** predictors supplied. (*Total 27 variables tried at each tree split as mentioned in the finalModel output).  
 
@@ -611,25 +611,25 @@ print(model_list[[3]])
 ## Resampling results across tuning parameters:
 ## 
 ##   interaction.depth  n.trees  Accuracy   Kappa      Accuracy SD
-##   1                   50      0.7561994  0.6908937  0.004159920
-##   1                  100      0.8269366  0.7810421  0.002232892
-##   1                  150      0.8565726  0.8185409  0.005624490
-##   2                   50      0.8557244  0.8173080  0.006856919
-##   2                  100      0.9050611  0.8798223  0.002930948
-##   2                  150      0.9286688  0.9097125  0.002859505
-##   3                   50      0.8939371  0.8657468  0.007136599
-##   3                  100      0.9395387  0.9234885  0.004220871
-##   3                  150      0.9572860  0.9459646  0.002930456
+##   1                   50      0.7515282  0.6848761  0.004120937
+##   1                  100      0.8225203  0.7754443  0.006885949
+##   1                  150      0.8522414  0.8130665  0.008770876
+##   2                   50      0.8504583  0.8105312  0.006094699
+##   2                  100      0.9034474  0.8777920  0.002676176
+##   2                  150      0.9262057  0.9066207  0.001500166
+##   3                   50      0.8939368  0.8656997  0.003824841
+##   3                  100      0.9377550  0.9212464  0.001387857
+##   3                  150      0.9585599  0.9475739  0.001633301
 ##   Kappa SD   
-##   0.005026235
-##   0.002889674
-##   0.007100747
-##   0.008750859
-##   0.003660598
-##   0.003653771
-##   0.009032141
-##   0.005349434
-##   0.003691762
+##   0.004775913
+##   0.008772049
+##   0.011104702
+##   0.007718729
+##   0.003353725
+##   0.001871832
+##   0.004798729
+##   0.001768056
+##   0.002058559
 ## 
 ## Tuning parameter 'shrinkage' was held constant at a value of 0.1
 ## 
@@ -654,7 +654,7 @@ model_list[[3]]$finalModel
 plot(model_list[[3]])
 ```
 
-![](PracMacLearn-Assignment_files/figure-html/gbm_plots-1.png) 
+![](PracMacLearn_files/figure-html/gbm_plots-1.png) 
 
 The plot above shows as the **number of boosting iteration** and **max tree depth** increases the accuracy of the model will increases as well. In theory, it is therefore possible to further boost the current **gbm** prediction model by further tuning the model training control parameters. However this would not be done as to maintain the same conditions for all models and in order to ensure accurate result comparison later. In addition, there is also risk to overfitting if the current **gbm** model is being further tuned to fit the training dataset.   
 
@@ -841,10 +841,10 @@ Table: **Model Comparison Summarization Table:**
 
 Model Algorithm                              Training Speed (sec)    Prediction Speed (sec)    Accuracy %    Out of Sample Error Rate % 
 ------------------------------------------  ----------------------  ------------------------  ------------  ----------------------------
-a) Classification Tree **(rpart)**                  19.47                     0.09               49.41                 50.59            
-b) Random Forest **(rf)**                           273.24                    0.52               99.27                  0.73            
-c) Gradient Boosting Machine **(gbm)**              136.15                    0.36               96.44                  3.56            
-d) Linear Discriminant Analysis **(lda)**           14.44                     1.26               70.41                 29.59            
+a) Classification Tree **(rpart)**                  15.28                     0.08               49.41                 50.59            
+b) Random Forest **(rf)**                           328.63                    0.92               99.27                  0.73            
+c) Gradient Boosting Machine **(gbm)**              123.40                    0.36               96.44                  3.56            
+d) Linear Discriminant Analysis **(lda)**           10.89                     0.09               70.41                 29.59            
 
 ####B) Visual Review of Prediction Result on Validation Dataset  
 
@@ -881,14 +881,14 @@ grid.rect(.5,.5,width=unit(.99,"npc"), height=unit(0.99,"npc"),
           gp=gpar(lwd=2, fill=NA, col="grey"))
 ```
 
-![](PracMacLearn-Assignment_files/figure-html/prediction_result_plot-1.png) 
+![](PracMacLearn_files/figure-html/prediction_result_plot-1.png) 
 
 
 By picking the top 2 important variables: **roll_belt** and **pitch_forearm** (reference VarImp listing in model 2) and plotting againts each other, the prediction results from all 4 models are visually presented. Color coding is used to represet whether the predicted classe values matched to the original classe values from the validation dataset. 
 
 ###Conclusion
 
-From the summarized table and plots above, it can be observed the best performing model is model 2 with the highest accuracy level.  Model 2 uses the **Random Forest** algorithm. Although this model may also takes the longest training duration but with computing power nowadays it is possible to further reduce training duration by using higher cores cpu technology and hence achieving an acceptable runtime. For the current weight lifting prediction requirement, model 2 training duration of **273.24 sec ( or 4.55 mins )** is deemed acceptable.  This best model will be used as the final model to predict the weight lifting actions from the testing dataset.  
+From the summarized table and plots above, it can be observed the best performing model is model 2 with the highest accuracy level.  Model 2 uses the **Random Forest** algorithm. Although this model may also takes the longest training duration but with computing power nowadays it is possible to further reduce training duration by using higher cores cpu technology and hence achieving an acceptable runtime. For the current weight lifting prediction requirement, model 2 training duration of **328.63 sec ( or 5.48 mins )** is deemed acceptable.  This best model will be used as the final model to predict the weight lifting actions from the testing dataset.  
 
 ----  
 
@@ -959,24 +959,24 @@ sessionInfo()
 ## other attached packages:
 ##  [1] gridExtra_2.0.0     knitr_1.11          MASS_7.3-43        
 ##  [4] gbm_2.1.1           plyr_1.8.3          survival_2.38-3    
-##  [7] randomForest_4.6-12 rpart_4.1-10        rattle_4.0.0       
+##  [7] randomForest_4.6-12 rattle_4.0.0        rpart_4.1-10       
 ## [10] doParallel_1.0.10   iterators_1.0.8     foreach_1.4.3      
 ## [13] caret_6.0-58        ggplot2_1.0.1       lattice_0.20-33    
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] Rcpp_0.12.0        highr_0.5          RColorBrewer_1.1-2
-##  [4] formatR_1.2        nloptr_1.0.4       class_7.3-13      
-##  [7] tools_3.2.2        digest_0.6.8       lme4_1.1-10       
-## [10] evaluate_0.7.2     nlme_3.1-121       gtable_0.1.2      
-## [13] mgcv_1.8-7         Matrix_1.2-2       yaml_2.1.13       
-## [16] SparseM_1.7        proto_0.3-10       e1071_1.6-7       
-## [19] RGtk2_2.20.31      stringr_1.0.0      MatrixModels_0.4-1
-## [22] stats4_3.2.2       nnet_7.3-10        rmarkdown_0.7     
-## [25] minqa_1.2.4        reshape2_1.4.1     car_2.1-0         
-## [28] magrittr_1.5       scales_0.2.5       codetools_0.2-14  
-## [31] htmltools_0.2.6    rpart.plot_1.5.3   pbkrtest_0.4-2    
-## [34] colorspace_1.2-6   labeling_0.3       quantreg_5.19     
-## [37] stringi_0.5-5      munsell_0.4.2
+##  [4] compiler_3.2.2     formatR_1.2        nloptr_1.0.4      
+##  [7] class_7.3-13       tools_3.2.2        digest_0.6.8      
+## [10] lme4_1.1-10        evaluate_0.7.2     nlme_3.1-121      
+## [13] gtable_0.1.2       mgcv_1.8-7         Matrix_1.2-2      
+## [16] yaml_2.1.13        SparseM_1.7        proto_0.3-10      
+## [19] e1071_1.6-7        RGtk2_2.20.31      stringr_1.0.0     
+## [22] MatrixModels_0.4-1 stats4_3.2.2       nnet_7.3-10       
+## [25] rmarkdown_0.7      minqa_1.2.4        reshape2_1.4.1    
+## [28] car_2.1-0          magrittr_1.5       scales_0.2.5      
+## [31] codetools_0.2-14   htmltools_0.2.6    rpart.plot_1.5.3  
+## [34] pbkrtest_0.4-2     colorspace_1.2-6   labeling_0.3      
+## [37] quantreg_5.19      stringi_0.5-5      munsell_0.4.2
 ```
 
 ----  
